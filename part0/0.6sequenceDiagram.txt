@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant browser
+    participant server
+    participant form element
+    participant javascript code
+
+    
+    Note right of form element: The submit button on form element is clicked
+
+    browser->>server: POST request https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+
+    Note right of form element: POST request contains the new note as JSON data, contains both the content and the timestamp (date). The content-type request tells the server that the included data is represented in JSON format, so the server would know how to correctly parse the data
+
+    server->>browser: status code 201 
+    deactivate server
+
+    Note right of browser: browser stays on the same page, and it sends  no further HTTP requests.
+
+    Note right of form element: form uses Javascript code fetched from the server instead of send the form data traditionally.
+
+    javascript code->>form element: command document.getElementById('notes_form') instructs to fetch form element from the page and register an event handler to handle the form's submit event.
+
+    Note right of javascript code: the event handler immediately calls the method e.preventDefault() to prevent the default handling of form's submit. Then the event handler creates a new note, adds it to the notes list with the command notes.push(note), rerenders the note list on the page and sends the new note to the server.
+
+
+
